@@ -11,6 +11,7 @@ public class Pedido{
     private String id;
     private String idTienda;
     private List<Orden> ordenes;
+    private String estado;
 
     public String getId() {
         return id;
@@ -39,10 +40,19 @@ public class Pedido{
         this.idTienda = idTienda;
     }
 
-    public Pedido(String id, String idTienda, List<Orden> ordenes) {
+    public Pedido(String id, String idTienda, List<Orden> ordenes,String estado) {
         this.id = id;
         this.idTienda = idTienda;
+        this.estado=estado;
         this.ordenes = ordenes;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
     
     

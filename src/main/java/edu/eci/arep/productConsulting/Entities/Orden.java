@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Orden{
     @Id
     private String id;
-    private String idProducto;
+    private Producto producto;
     private int cantidad;
 
     public String getId() {
@@ -17,12 +17,12 @@ public class Orden{
     public void setId(String id) {
         this.id = id;
     }
-    public String getIdProducto() {
-        return idProducto;
+    public Producto getIdProducto() {
+        return producto;
     }
 
-    public void setIdProducto(String idProducto) {
-        this.idProducto = idProducto;
+    public void setIdProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {

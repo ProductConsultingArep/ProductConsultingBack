@@ -8,18 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Tienda{
     @Id
-    private String id;
     private String nombre;
     private List<Producto> productos;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -39,8 +29,8 @@ public class Tienda{
     public Tienda() {
     }
 
-    public Tienda(String id, String nombre, List<Producto> productos) {
-        this.id = id;
+    public Tienda(String nombre, List<Producto> productos) {
+      
         this.nombre = nombre;
         this.productos = productos;
     }
