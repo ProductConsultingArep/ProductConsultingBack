@@ -1,5 +1,6 @@
 package edu.eci.arep.productConsulting.Entities;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,18 +11,22 @@ public class Orden{
     private Producto producto;
     private int cantidad;
 
+    public Orden(){
+        id = new ObjectId().toString();
+    }
+
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
-    public Producto getIdProducto() {
+
+    public Producto getProducto() {
         return producto;
     }
 
-    public void setIdProducto(Producto producto) {
+    public void setProducto(Producto producto) {
         this.producto = producto;
     }
 

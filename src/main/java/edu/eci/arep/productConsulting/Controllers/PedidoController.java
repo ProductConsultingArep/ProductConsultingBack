@@ -1,47 +1,48 @@
 package edu.eci.arep.productConsulting.Controllers;
 
+import edu.eci.arep.productConsulting.Entities.Orden;
 import edu.eci.arep.productConsulting.Entities.Pedido;
+import edu.eci.arep.productConsulting.Repository.OrdenRepository;
 import edu.eci.arep.productConsulting.Repository.PedidoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @CrossOrigin
+@RequestMapping("/pedidos")
 public class PedidoController{
     @Autowired
-    private PedidoRepository PedidoRepository;
+    private PedidoRepository pedidoRepository;
+    @Autowired
+	private OrdenRepository ordenRepository;
 
-    @RequestMapping(value="/Pedido",method=RequestMethod.GET)
+    @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<?> Pedidos(){
         try {
-	        return new ResponseEntity<>(PedidoRepository.findAll(),HttpStatus.ACCEPTED);
+	        return new ResponseEntity<>(pedidoRepository.findAll(),HttpStatus.ACCEPTED);
 	    } catch (Exception ex) {
 	        return new ResponseEntity<>("Not Found",HttpStatus.NOT_FOUND);
 	    }
     }
 
-    @RequestMapping(value="/Pedido/{id}",method=RequestMethod.GET)
+    @RequestMapping(value="/{id}",method=RequestMethod.GET)
     public ResponseEntity<?> PedidoById(@PathVariable("id") String PedidoId){
         try {
-	        return new ResponseEntity<>(PedidoRepository.findById(PedidoId),HttpStatus.ACCEPTED);
+	        return new ResponseEntity<>(pedidoRepository.findById(PedidoId),HttpStatus.ACCEPTED);
 	    } catch (Exception ex) {
 	        return new ResponseEntity<>("Not Found",HttpStatus.NOT_FOUND);
 	    }
     }
 
-    @RequestMapping(value="/Pedido",method=RequestMethod.POST)
+    @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<?> postPedido(@RequestBody Pedido p){
         try {
-			PedidoRepository.insert(p);
+			ordenRepository.insert(p.getOrdenes());
+			pedidoRepository.insert(p);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
@@ -49,22 +50,29 @@ public class PedidoController{
 		}
     }
 
-    @RequestMapping(value="/Pedido",method=RequestMethod.PUT)
+    @RequestMapping(method=RequestMethod.PUT)
     public ResponseEntity<?> updatePedido(@RequestBody Pedido p){
         try {
-			PedidoRepository.save(p);
+			pedidoRepository.save(p);
 			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
 		}
     }
-    @RequestMapping(value="/Pedido/{id}",method=RequestMethod.DELETE)
+    @RequestMapping(value="/{id}",method=RequestMethod.DELETE)
     public ResponseEntity<?> deletePedido(@PathVariable("id") String PedidoId){
         try {
-			PedidoRepository.deleteById(PedidoId);
+			pedidoRepository.deleteById(PedidoId);
 			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
 		}
     }
+
+	@DeleteMapping("/deleteAll")
+	public ResponseEntity<?> deleteAll(){
+		pedidoRepository.deleteAll();
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 }

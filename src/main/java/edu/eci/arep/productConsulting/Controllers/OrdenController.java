@@ -6,21 +6,17 @@ import edu.eci.arep.productConsulting.Repository.OrdenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @CrossOrigin
+@RequestMapping("/ordenes")
 public class OrdenController{
     @Autowired
     private OrdenRepository ordenRepository;
 
-    @RequestMapping(value="/orden",method=RequestMethod.GET)
+    @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<?> ordenes(){
         try {
 	        return new ResponseEntity<>(ordenRepository.findAll(),HttpStatus.ACCEPTED);
@@ -29,7 +25,7 @@ public class OrdenController{
 	    }
     }
 
-    @RequestMapping(value="/orden/{id}",method=RequestMethod.GET)
+    @RequestMapping(value="/{id}",method=RequestMethod.GET)
     public ResponseEntity<?> OrdenById(@PathVariable("id") String ordenId){
         try {
 	        return new ResponseEntity<>(ordenRepository.findById(ordenId),HttpStatus.ACCEPTED);
@@ -38,7 +34,7 @@ public class OrdenController{
 	    }
     }
 
-    @RequestMapping(value="/orden",method=RequestMethod.POST)
+    @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<?> postOrden(@RequestBody Orden o){
         try {
 			ordenRepository.insert(o);
@@ -49,7 +45,7 @@ public class OrdenController{
 		}
     }
 
-    @RequestMapping(value="/orden",method=RequestMethod.PUT)
+    @RequestMapping(method=RequestMethod.PUT)
     public ResponseEntity<?> updateOrden(@RequestBody Orden o){
         try {
 			ordenRepository.save(o);
@@ -58,7 +54,7 @@ public class OrdenController{
 			return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
 		}
     }
-    @RequestMapping(value="/orden/{id}",method=RequestMethod.DELETE)
+    @RequestMapping(value="/{id}",method=RequestMethod.DELETE)
     public ResponseEntity<?> deleteOrden(@PathVariable("id") String ordenId){
         try {
 			ordenRepository.deleteById(ordenId);
@@ -67,4 +63,11 @@ public class OrdenController{
 			return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
 		}
     }
+
+	@DeleteMapping("/deleteAll")
+	public ResponseEntity<?> deleteAll(){
+		ordenRepository.deleteAll();
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 }

@@ -6,21 +6,17 @@ import edu.eci.arep.productConsulting.Repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @CrossOrigin
+@RequestMapping("/productos")
 public class ProductoController{
     @Autowired
     private ProductoRepository productoRepository;
 
-    @RequestMapping(value="/producto",method=RequestMethod.GET)
+    @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<?> productos(){
         try {
 	        return new ResponseEntity<>(productoRepository.findAll(),HttpStatus.ACCEPTED);
@@ -29,7 +25,7 @@ public class ProductoController{
 	    }
     }
 
-    @RequestMapping(value="/producto/{id}",method=RequestMethod.GET)
+    @RequestMapping(value="/{id}",method=RequestMethod.GET)
     public ResponseEntity<?> productoById(@PathVariable("id") String productoId){
         try {
 	        return new ResponseEntity<>(productoRepository.findById(productoId),HttpStatus.ACCEPTED);
@@ -38,7 +34,7 @@ public class ProductoController{
 	    }
     }
 
-    @RequestMapping(value="/producto",method=RequestMethod.POST)
+    @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<?> postProducto(@RequestBody Producto p){
         try {
 			productoRepository.insert(p);
@@ -49,7 +45,7 @@ public class ProductoController{
 		}
     }
 
-    @RequestMapping(value="/producto",method=RequestMethod.PUT)
+    @RequestMapping(method=RequestMethod.PUT)
     public ResponseEntity<?> updateProducto(@RequestBody Producto p){
         try {
 			productoRepository.save(p);
@@ -58,7 +54,7 @@ public class ProductoController{
 			return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
 		}
     }
-    @RequestMapping(value="/producto/{id}",method=RequestMethod.DELETE)
+    @RequestMapping(value="/{id}",method=RequestMethod.DELETE)
     public ResponseEntity<?> deleteProducto(@PathVariable("id") String productoId){
         try {
 			productoRepository.deleteById(productoId);
@@ -67,4 +63,11 @@ public class ProductoController{
 			return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
 		}
     }
+
+    @DeleteMapping("/deleteAll")
+	public ResponseEntity<?> deleteAll(){
+    	productoRepository.deleteAll();
+    	return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 }
